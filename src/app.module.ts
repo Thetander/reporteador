@@ -31,7 +31,16 @@ import { DatabaseConnectionModule } from './database-connection/modules/database
       password: config.get<string>(DATABASE_PASSWORD),
       database: config.get<string>(DATABASE_NAME),
         entities: [__dirname + '/**/*.entity{.ts,.js}'],
-        synchronize: true, 
+        synchronize: true,
+        ssl: process.env.POSTGRES_SSL === "true",
+        extra: {
+          ssl:
+            process.env.POSTGRES_SSL === "true"
+              ? {
+                  rejectUnauthorized: false,
+                }
+              : null,
+        }, 
        })
       }), 
     ConfigModule.forRoot({
